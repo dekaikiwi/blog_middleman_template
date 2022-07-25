@@ -109,7 +109,7 @@ GEM
     parallel (1.20.1)
     public_suffix (4.0.6)
     puma (3.12.6)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rake (12.3.3)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
