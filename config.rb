@@ -19,6 +19,12 @@ set :md, { :format => :html5 }
 
 config[:root_dir] = File.dirname(__FILE__)
 
+# activate :deploy do |deploy|
+# 	deploy.deploy_method = :git
+# 	deploy.remote = 'dokku@165.227.57.165'
+# 	deploy.branch = 'master'
+# end
+
 
 # set :markdown_engine, :redcarpet
 
