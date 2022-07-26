@@ -13,4 +13,9 @@ A dice reader that uses a camera to read the numbers off of rolled dice and disp
 
 LINE/FB Messenger Bot for keeping track of Shopping/Eating out IOUs
 
+### Video Conference/Audio Recorder Pi
 
+Build an all in one unit that can do the following controlled through a web interface
+
+- Stream Audio and Video to a Video Conference solution (Google Meet, Zoom)
+- Record audio to an audio file
