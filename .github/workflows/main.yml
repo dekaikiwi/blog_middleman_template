@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: deploy 
 
 # Controls when the workflow will run
@@ -33,6 +31,9 @@ jobs:
         run: 'bundle exec middleman build'
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
+        with:
+          # Avoid making unnecessary commits on GitHub
+          push: false
 
       - id: deploy
         name: Deploy to dokku
