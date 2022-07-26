@@ -4,17 +4,14 @@ title: Jonathan Glassey
 
 # About
 
-**Jonathan Glassey** is a Software Enginner raised in Christchurch New Zealand, now living in Tokyo Japan.
-
-In addition to his experience in the field of software, Jonathan also has 10+ years of Japanese study (JLPT N1) and 3+ years of professional Japanese use under his belt.
+**Jonathan Glassey** is a Software Enginner from Christchurch New Zealand, now based in Tokyo Japan.
 
 You'll often find him doing one of the following.
 
-- Coding
-- Pining over his [pet ferrets](https://instagram.com/tokyo_ferret)
-- Cycling
-- Translating Board Games into English
-- Rolling d20s in the Forgotten Realms
+- Pining over his [pet ferrets](https://instagram.com/tokyo_ferret).
+- Cycling.
+- Rolling d20s.
+- Working on personal software projects.
 - Learning Japanese phrases he'll only get to use at most twice in his lifetime.
 
 Links
