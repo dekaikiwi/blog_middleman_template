@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Use the title from a page's frontmatter if it has one -->
+  <title>List of Useful Network Terminal Commands</title>
+  <link href="/stylesheets/site.css" rel="stylesheet" />
+  <script src="/javascripts/site.js"></script>
+</head>
+
+  <body>
+    <p>
+<a href="/">Back...</a>
+</p>
+
+
+    <i>Disclaimer: These my raw thoughts and opinions, ideas expressed may not be fully formed or completely factual.</i>
+
+    
+<h1 id="list-of-useful-network-terminal-commands">List of Useful Network Terminal Commands</h1>
+
+<p>Here are some useful utilities for working with networks on a UNIX system.</p>
+
+<h2 id="ping">ping</h2>
+
+<p>The quintessential "are you alive" utility. Uses ICMP protocol to see if server at the address given as an argument is responding.</p>
+
+<p>Usage:</p>
+
+<pre><code>$ ping google.com
+PING google.com (172.217.161.78): 56 data bytes
+64 bytes from 172.217.161.78: icmp_seq=0 ttl=55 time=13.959 ms
+64 bytes from 172.217.161.78: icmp_seq=1 ttl=55 time=11.498 ms
+64 bytes from 172.217.161.78: icmp_seq=2 ttl=55 time=13.012 ms
+</code></pre>
+
+<h2 id="traceroute">traceroute</h2>
+
+<p>Tracks the path a packet takes through to the server.</p>
+
+<p>Useful for..</p>
+
+<ul>
+  <li>Seeing how many "hops" a packet must go through to get the the host server.</li>
+  <li>Finding any network defects between you and the host server.</li>
+</ul>
+
+<p>Traceroute exploits the implementation of the TTL (Time to Live) field and ICMP protocol. Typically when a router decrements the TTL field value to 0 it will drop the packet and send some ICMP message to the ip address listed in <code>src</code> (source) to say that the packet was dropped.</p>
+
+<p>A usual TTL value would be some value of 60 (for example), traceroute starts with a TTL of 1. Which means the first router that receives the packet will decrement the counter to one and drop the packet. traceroute uses the information in the recieved ICMP "dropped" packet. To find the identify of the first "hop" router. Then sends a new packet with a TTL of 2 and so and and so forth until it gets to the destination server.</p>
+
+<p>Usage:</p>
+
+<pre><code>$ traceroute google.com
+traceroute to google.com (172.217.26.46), 64 hops max, 52 byte packets
+ 1  192.168.1.1 (192.168.1.1)  1.447 ms  1.063 ms  0.999 ms
+ 2  xxx.xxx.xxx.xxx (xxx.xxx.xxx.xxx)  3.427 ms  3.533 ms  4.229 ms
+ 3  xxx.xxx.xxx.xxx (xxx.xxx.xxx.xxx)  3.932 ms  3.700 ms  3.206 ms
+ 4  xxx.xxx.xxx.xxx (xxx.xxx.xxx.xxx)  4.641 ms  4.283 ms  4.708 ms
+ 5  133.208.191.163 (133.208.191.163)  5.172 ms
+    133.208.191.35 (133.208.191.35)  10.472 ms  5.747 ms
+ 6  72.14.205.0 (72.14.205.0)  5.984 ms  4.537 ms  4.719 ms
+ 7  * * *
+ 8  108.170.233.18 (108.170.233.18)  8.257 ms
+    108.170.233.20 (108.170.233.20)  12.567 ms
+    108.170.236.4 (108.170.236.4)  7.003 ms
+ 9  72.14.238.75 (72.14.238.75)  6.151 ms
+    72.14.234.199 (72.14.234.199)  5.153 ms  4.661 ms
+10  nrt12s17-in-f14.1e100.net (172.217.26.46)  4.444 ms  4.683 ms  4.447 ms
+</code></pre>
+
+<p>Note that a <code>*</code> in the output is a hop where the packet was dropped by no ICMP response packet was received before a preset timeout. In the case you get these I would extend the timeout with the <code>-w</code> option and see if it improves the situation at all.</p>
+
+<h2 id="mrt-my-traceroute">mrt (My Traceroute)</h2>
+
+<p>A combination of the <code>ping</code> and <code>traceroute</code> commands. <code>mrt</code> gives a constant update on the path your packets will take to the destination server and gives useful information on specific hops where you experience an unexpected packet loss and how long on average each response takes. Useful for identifying problematic nodes that aren't down, but perhaps performing badly.</p>
+
+<p>Usage:</p>
+
+<pre><code>$ mrt google.com
+</code></pre>
+
+<h2 id="tcpdump">tcpdump</h2>
+
+<p>Provides the raw dump of packets being sent and received by any of your network interfaces. Despite the name, displays packets from other IP protocols. Quite useful for seeing what is going on under the hood of some command line tools.</p>
+
+<p>For example if I run <code>ping google.com</code> and then <code>tcpdump -nni en0 icmp</code> (-nn to not convert ip address to host names and -i to specify network interface) I get the following output.</p>
+
+<pre><code>tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on en0, link-type EN10MB (Ethernet), capture size 262144 bytes
+00:04:10.085754 IP 192.168.1.9 &gt; 172.217.161.78: ICMP echo request, id 47710, seq 0, length 64
+00:04:10.091676 IP 172.217.161.78 &gt; 192.168.1.9: ICMP echo reply, id 47710, seq 0, length 64
+00:04:11.089104 IP 192.168.1.9 &gt; 172.217.161.78: ICMP echo request, id 47710, seq 1, length 64
+00:04:11.094271 IP 172.217.161.78 &gt; 192.168.1.9: ICMP echo reply, id 47710, seq 1, length 64
+00:04:12.092213 IP 192.168.1.9 &gt; 172.217.161.78: ICMP echo request, id 47710, seq 2, length 64
+</code></pre>
+
+<p>Similar with <code>traceroute</code></p>
+
+<pre><code>00:09:54.790974 IP (tos 0x0, ttl 1, id 58126, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 1, length 52
+00:09:54.792225 IP (tos 0xc0, ttl 64, id 13892, offset 0, flags [none], proto ICMP (1), length 100)
+    192.168.1.1 &gt; 192.168.1.9: ICMP time exceeded in-transit, length 80
+	IP (tos 0x0, ttl 1, id 58126, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 1, length 52
+00:09:54.792789 IP (tos 0x0, ttl 1, id 58127, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 2, length 52
+00:09:54.793711 IP (tos 0xc0, ttl 64, id 13893, offset 0, flags [none], proto ICMP (1), length 100)
+    192.168.1.1 &gt; 192.168.1.9: ICMP time exceeded in-transit, length 80
+	IP (tos 0x0, ttl 1, id 58127, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 2, length 52
+00:09:54.793775 IP (tos 0x0, ttl 1, id 58128, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 3, length 52
+00:09:54.794691 IP (tos 0xc0, ttl 64, id 13894, offset 0, flags [none], proto ICMP (1), length 100)
+    192.168.1.1 &gt; 192.168.1.9: ICMP time exceeded in-transit, length 80
+	IP (tos 0x0, ttl 1, id 58128, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 3, length 52
+00:09:54.794754 IP (tos 0x0, ttl 2, id 58129, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 4, length 52
+00:09:54.798466 IP (tos 0x0, ttl 254, id 0, offset 0, flags [none], proto ICMP (1), length 56)
+    133.205.148.163 &gt; 192.168.1.9: ICMP time exceeded in-transit, length 36
+	IP (tos 0x0, ttl 1, id 58129, offset 0, flags [none], proto ICMP (1), length 72)
+    192.168.1.9 &gt; 13.78.34.172: ICMP echo request, id 58125, seq 4, length 52
+00:09:54.799114 IP (tos 0x0, ttl 2, id 58130, offset 0, flags [none], proto ICMP (1), length 72)
+</code></pre>
+
+<p>See how TTL is incrementing gradually and we receive <code>ICMP time exceeded in-transit</code> from route when TTL is decremented to 0 on their end.</p>
+
+    <div id='footer'>
+  Latest commit history for this page...
+  <ul class='git_commits'>
+    <li>
+      <a href="https://github.com/dekaikiwi/blog_middleman_template/commit/f33590cf865803fcb7473c9722474dd48fd6af25">f33590cf</a>
+      Jonathan Glassey - Create useful_network_terminal_commands.html.md (2019-04-20 15:16:26 UTC)
+    </li>
+  </ul>
+</div>
+
+  </body>
+</html>
