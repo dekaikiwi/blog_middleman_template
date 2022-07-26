@@ -104,6 +104,7 @@ GEM
     puma (5.6.4)
       nio4r (~> 2.0)
     rack (2.2.4)
+    rake (13.0.6)
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -141,6 +142,7 @@ DEPENDENCIES
   net-ftp
   octokit (~> 4.0)
   puma
+  rake
   tzinfo-data
   wdm (~> 0.1)
 
