@@ -110,6 +110,8 @@ As part of the deployment process for a Ruby project. Dokku will attempt a `prec
 
 With that we should be ready to test the deploy!
 
+**2022 UPDATE:** The middleman-dokku gem is unmaintained and references several dependencies are now considered insecure. I ended up removing the gem itself, but am continuing to use the boilerplate code that it generates as referenced above.
+
 ## Beam me up Dokku
 
 As with any deploy to Heroku. You will need to set up a new git remote for Dokku.
