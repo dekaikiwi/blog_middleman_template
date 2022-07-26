@@ -110,7 +110,7 @@ As part of the deployment process for a Ruby project. Dokku will attempt a `prec
 
 With that we should be ready to test the deploy!
 
-**2022 UPDATE:** The middleman-dokku gem is unmaintained and references several dependencies are now considered insecure. I ended up removing the gem itself, but am continuing to use the boilerplate code that it generates as referenced above.
+**2022 UPDATE:** The middleman-dokku gem is unmaintained and references several dependencies are now considered insecure. To satisfy dependabot on GitHub I removed the gem. The gem itself only generates the boilerplate files as listed above. So copying and pasting these into your own project should do the trick. (Just remove the require 'middleman/dokku' line from the top of the RakeFile).
 
 ## Beam me up Dokku
 
