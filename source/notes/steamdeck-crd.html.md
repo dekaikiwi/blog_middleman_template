@@ -21,10 +21,15 @@ The following snippet, should pull the [CRD package](https://aur.archlinux.org/p
 
 ```
 mkdir ~/packages
+
 cd packages
+
 git clone https://aur.archlinux.org/chrome-remote-desktop.git
+
 cd chrome-remote-desktop
+
 sudo pacman -S --needed base-devel
+
 makepkg
 ```
 
